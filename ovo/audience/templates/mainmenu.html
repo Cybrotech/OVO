@@ -1,0 +1,46 @@
+{% if ext == 'content' or ext == 'audience' %}
+<nav id="mainmenu">
+	<div class="container">
+		<ul>
+			<li class="item {% if ext == 'content' %}active {% endif %}" id="contentext">
+				<a href="#">
+					<span>Content Extension</span>
+					<div class="selected"></div>
+				</a>
+			</li>
+			<li class="item {% if ext == 'audience' %}active {% endif %} last" id="audienceext">
+				<a href="#">
+					<span>Audience Extension</span>
+					<div class="selected"></div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+{% endif %}
+
+
+{% if ext == 'partner' %}
+<nav id="mainmenu" class="menupartner">
+	<div class="container">
+		<ul>
+			<div class="col-md-2 center">
+				<li class="item active partner" id="partner">
+				<a href="#">
+					<span>Trading Partner</span>
+					<div class="selected"></div>
+				</a>
+			</li>
+			</div>
+			<div class="col-md-2 right">
+				<li class="item last" id="back">
+				<a href="#">
+					<span>Back to Content Extension</span>
+					<div class="selected"></div>
+				</a>
+			</li>
+			</div>
+		</ul>
+	</div>
+</nav>
+{% endif %}

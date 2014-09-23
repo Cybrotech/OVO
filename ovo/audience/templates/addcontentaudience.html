@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Add Content{% endblock %}
+
+{% block content %}
+	{# $loadcheckboxjs = true; #}
+
+{% include 'mainmenu.html' %}
+{% include 'sectionmenu.html' %}
+
+<div class="fullheight container">
+	<nav>
+		<ul id="widgetsmenu" class="item3">
+			<!-- class="completed" adds the green bar at the bottom. class="active" adds the green bar + the arrow -->
+			<li id="choose_sites" class="active"><a>Your Content<span>{{collections|length}}</span></a></li>
+			<li id="choose_content"><a>Destination sites<span>{{websites|length}}</span></a></li>
+			<li id="choose_widgets"><a>Custom widgets</a></li>
+            
+         </ul>
+	</nav>
+    
+	<form id="chooselists" class="fullheight col-md-1" action="." method="post">{% csrf_token %}
+		<!-- class "selected" add the green colour to the text -->
+		<div id="choose_sites_list" class="col-md-3 fullheight active">
+			<a class="deselect"><span>Deselect All</span></a>
+			<!--site-->
+			{% for each_collection in collections %}
+			<fieldset>
+				<div class="item">
+				
+					<label>{{each_collection.collection.name}}</label>
+					 <label class="checkbox-white w-active chooselist-ch check_all" for="collection-{{forloop.counter}}"></label><input type="checkbox" name="collection-{{forloop.counter}}" value="{{each_collection.collection.id}}" class="checkall checkbox site original-ch i-ws" style="float: left;" checked>
+				</div>
+				<ul class="sections">
+					<!--sections-->
+					{% for each_video in each_collection.videos %}
+					
+					<li><label id="overlay-btn{{forloop.counter}}" class="overlay-btn-class" onclick="set_video_details('{{each_video.title}}', '{{each_video.description}}', '{{each_video.video_path}}')">{{each_video.title}}</label><label class="checkbox-white w-active chooselist-ch" for="collection-{{forloop.parentloop.counter}}-video-{{forloop.counter}}"></label><input type="checkbox" name="collection-{{forloop.parentloop.counter}}-video-{{forloop.counter}}" value="{{each_video.id}}" class="checkbox section original-ch i-s" checked></li>
+					{% endfor %}
+					<!--end sections-->
+				</ul>	
+			</fieldset>
+			{% endfor %}			
+			<!--end site-->
+		</div>
+		<div id="choose_content_list" class="col-md-3 fullheight inactive">
+			<a class="deselect"><span>Deselect All</span></a>
+			<!--content-->
+			{% for each_site in websites %}
+			<fieldset>
+				<div class="item">
+					<label>{{each_site.website.site_name}}</label>
+					 <label class="checkbox-white w-active chooselist-ch check_all" for="site-{{forloop.counter}}"></label><input type="checkbox" name="site-{{forloop.counter}}" value="{{each_site.website.id}}" class="checkall checkbox site original-ch i-cp" style="float: left;" checked>
+				</div>
+				<ul class="sections">
+					<!--sections-->
+					{% for each_section in each_site.sections %}
+					<li><label>{{each_section.section_name}}</label> <label class="checkbox-white w-active chooselist-ch" for="site-{{forloop.parentloop.counter}}-section-{{forloop.counter}}"></label><input type="checkbox" name="site-{{forloop.parentloop.counter}}-section-{{forloop.counter}}" value="{{each_section.id}}" class="checkbox section original-ch i-c" checked></li>
+					{% endfor %}
+				</ul>	
+			</fieldset>
+			{% endfor %}
+			<!--end content-->
+		</div>
+		<div id="choose_widgets_list" class="col-md-3 fullheight last inactive">
+			<div class="item">
+				<a href="#" onclick="document.getElementById('chooselists').submit();">Request a Custom Widget</a>
+			</div>
+		</div>
+		<div id="save" class="active"> <!-- I'm not sure when this button has to appear. To toggle it, change class to "active" -->
+			<input type="submit"  value="Save and Continue">
+		</div>
+	</form>
+</div>
+<div class="overlay-container">
+		<div class="window-container zoomin">
+            <div class="close-overlay"></div>
+            	<div id="video-container">	
+            		 <img src="/static/company/images/video-preview.png" width="100%" id="img-preview" />
+            		 <video width="100%" controls id="video-preview" name="video-preview" style="display:none">
+            		 Your browser does not support the video tag.
+            		 </video>
+            		 <iframe id="vimeo-preview" width="943" height="562" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:none"></iframe>
+            		
+            		 <iframe width="943" height="562" id="youtube-preview" frameborder="0" allowfullscreen style="display:none"></iframe>
+                    <h1 id="video-title">Geisha</h1>
+                    <h2 id="video-duration">00:00:00</h2>
+                    <span class="description">Description</span>
+                    <p id="video-description">Apiciis et est magnam facitiu mquibus ute nones dolenti oreiciurita santendam et faces dellabo repedio quatem cum atis autatiu scimus estius earum landi que poriati consed que int. At apicatquos explite mporro totaspis etur At apicatquos explite mporro totaspis eture mporro totaspis etur At apicatquos explite mporro totaspis etur</p>
+        	</div>
+        </div>
+	</div>
+{% endblock content %}
+{% block custom_scripts %}
+<script src="{% static 'audience/js/ajax_handle.js' %}"></script>
+<script type="text/javascript">
+    $(".overlay-btn-class").click(function(){
+          $('.overlay-container').fadeIn(function() {
+
+           window.setTimeout(function(){
+            $('.window-container.'+'zoomin').addClass('window-container-visible');
+           }, 100);
+
+          });
+ });
+        $('.close-overlay').click(function() {
+                $('.overlay-container').fadeOut().end().find('.window-container').removeClass('window-container-visible');
+        });
+
+</script>
+{% endblock custom_scripts %}

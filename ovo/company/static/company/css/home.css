@@ -1,0 +1,410 @@
+/* fullscreen setup */
+html, body {
+    height:100%;
+}
+.fullscreen,
+.content-a {
+    width:100%;
+    min-height:100%;
+}
+.not-fullscreen,
+.not-fullscreen .content-a,
+.fullscreen.not-overflow,
+.fullscreen.not-overflow .content-a {
+    height:100%;
+    overflow:hidden;
+}
+.content-a {
+	display:table;
+}
+.content-b {
+	display:table-cell;
+    position:relative;
+	vertical-align:middle;
+	text-align:center;
+}
+.not-fullscreen {
+    height:50%;
+}
+.background {
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-position:50% 50%\9 !important;
+}
+
+
+
+
+/* #Slide01
+--------------------------------------------------------*/
+#Slide01 {
+	height: 270px;
+    text-align: center;
+}
+#Slide01 h2 {
+	font: 31px/40px Arial, sans-serif;
+    letter-spacing: -1px;
+	text-transform: none!important;
+	margin-bottom: 0;
+}
+#Slide01 h1 {
+	background: url(../images/the-outplay.png) 0 0 no-repeat;
+	width: 493px;
+	height: 124px;
+	margin: 0 auto;
+	text-indent: -9000px
+}
+
+
+
+/* #Slide02
+--------------------------------------------------------*/
+#Slide02 {
+	height: 500px;
+	background-image: url(../images/parallax/parallax01.jpg);
+}
+#Slide02 h1 {
+	color: #fff;
+    font-size: 140px;
+    letter-spacing: -1px;
+    line-height: 130px;
+	height: 300px;
+    margin: 200px 0 0;
+    text-shadow: 5px 5px 10px #555;
+    text-transform: uppercase;
+}
+#Slide02 h1 STRONG {
+	background-color: #dd1e1b;
+    display: inline-block;
+    height: 130px;
+    padding: 0 10px;
+}
+
+
+/* #Slide03
+--------------------------------------------------------*/
+#Slide03 {
+	box-shadow: 0 10px 20px -10px #555 inset;
+    height: 850px;
+    text-align: center;
+}
+#Slide03 h2 {
+	font-size: 48px;
+    line-height: 48px;
+    margin: 50px 0;
+    text-transform: uppercase;
+}
+#Slide03 .Holder {
+    margin: 20px 0;
+	height: 578px;
+    width: 100%;
+	position: relative;
+	overflow: visible;
+}
+#Slide03 .Background {
+	background-image: url("../images/parallax/block01/bg.jpg");
+   	background-position: center top;
+    background-repeat: no-repeat;height: 578px;
+    width: 100%;
+	position: relative;
+	overflow: visible;
+}
+
+#Slide03 .Block {
+    position: absolute;
+}
+#Slide03 .Block01 {
+	left: 561px;
+    top: 30px;
+}
+#Slide03 .Block02 {
+	left: 349px;
+    top: 77px;
+}
+#Slide03 .Block03 {
+	left: 466px;
+    top: 260px;
+}
+#Slide03 .Block04 {
+	left: 266px;
+    top: 295px;
+}
+#Slide03 .Block05 {
+	left: 288px;
+    top: 480px;
+}
+#Slide03 .Block06 {
+	left: 50px;
+    top: -100px;
+}
+#Slide03 .Block07 {
+	left: 632px;
+    top: 320px;
+}
+#Slide03 .Link {
+	float: left;
+    text-align: center;
+    width: 100%;
+}
+#Slide03 .Link A {
+	background-color: #72be44;
+    box-shadow: -1px -1px 2px #3a7124 inset;
+    color: #fff;
+    font-size: 40px;
+    padding: 10px 100px;
+    text-shadow: 0 0 1px #3a7124;
+    text-transform: uppercase;
+}
+
+
+
+/* #Slide04
+--------------------------------------------------------*/
+#Slide04 {
+	height: 500px;
+	background-image: url(../images/parallax/parallax02.jpg);
+}
+#Slide04 h1 {
+	color: #f7eb1e;
+    font-size: 140px;
+    letter-spacing: -1px;
+    line-height: 130px;
+	height: 300px;
+    margin: 200px 0 0;
+    text-shadow: 5px 5px 10px #555;
+    text-transform: uppercase;
+}
+#Slide04 h1 STRONG {
+	background-color: #006db8;
+    display: inline-block;
+    height: 130px;
+    padding: 0 10px;
+}
+
+
+
+
+/* #Slide05
+--------------------------------------------------------*/
+#Slide05 {
+	box-shadow: 0 10px 20px -10px #555 inset;
+    height: 900px;
+    text-align: center;
+}
+#Slide05 h2 {
+	font-size: 48px;
+    line-height: 48px;
+    margin: 50px 0;
+    text-transform: uppercase;
+}
+
+#Slide05 .Holder {
+   	float: left;
+    height: 592px;
+    margin: 0;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+}
+#Slide05 .Background {
+   	height: 397px;
+    margin: 170px 0 0;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+}
+#Slide05 .Block {
+    position: absolute;
+}
+#Slide05 .Block00 {
+	left: 305px;
+    top: 0;
+    z-index: 1;
+}
+#Slide05 .Block01 {
+	left: 72px;
+    top: -207px;
+    z-index: 0;
+}
+#Slide05 .Block02  {
+    left: 103px;
+    top: -186px;
+    z-index: 3;
+}
+#Slide05 .Block03 {
+	left: 103px;
+    top: -194px;
+    z-index: 2;
+}
+#Slide05 .Block04 {
+    left: 75px;
+    top: -227px;
+    z-index: 9;
+}
+#Slide05 .Block05 {
+	left: 600px;
+    top: 130px;
+    z-index: 9;
+}
+#Slide05 .Link {
+	float: left;
+    text-align: center;
+    width: 100%;
+}
+#Slide05 .Link A {
+	background-color: #72be44;
+    box-shadow: -1px -1px 2px #3a7124 inset;
+    color: #fff;
+    font-size: 40px;
+    padding: 10px 100px;
+    text-shadow: 0 0 1px #3a7124;
+    text-transform: uppercase;
+}
+
+
+/* #Slide06
+--------------------------------------------------------*/
+#Slide06 {
+	height: 500px;
+	background-image: url(../images/parallax/parallax03.jpg);
+}
+#Slide06 h1 {
+	color: #081a28;
+    font-size: 140px;
+    letter-spacing: -1px;
+    line-height: 130px;
+	height: 300px;
+    margin: 200px 0 0;
+    text-shadow: 5px 5px 10px #555;
+    text-transform: uppercase;
+}
+#Slide06 h1 STRONG {
+	background-color: #f19566;
+    display: inline-block;
+    height: 130px;
+    padding: 0 10px;
+}
+
+
+/* #Slide07
+--------------------------------------------------------*/
+#Slide07 {
+	box-shadow: 0 10px 20px -10px #555 inset;
+    height: 840px;
+    padding: 0;
+    text-align: center;
+}
+#Slide07 .Holder {
+    height: 495px;
+    margin: 251px 0 0;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+}
+#Slide07 .Background {
+	background-image: url("../images/parallax/block03/grafico01.jpg");
+   	background-position: center top;
+    background-repeat: no-repeat;
+    height: 495px;
+    overflow: visible;
+    position: relative;
+    width: 100%;
+}
+#Slide07 .Content01 {
+	left: 2px;
+    position: absolute;
+    top: -240px;
+}
+#Slide07 .Content02 {
+	left: 460px;
+    position: absolute;
+    top: -210px;
+}
+#Slide07 .Content03 {
+	left: 630px;
+    position: absolute;
+    top: -10px;
+}
+#Slide07 .Content04 {
+	left: 180px;
+    position: absolute;
+    top: 115px;
+}
+#Slide07 .Content05 {
+	left: 150px;
+    position: absolute;
+    top: 300px;
+}
+
+
+
+/* #Slide08
+--------------------------------------------------------*/
+#Slide08 {
+	background-color: #231f20;
+	padding: 55px 0;
+    text-align: center;
+}
+#Slide08 A {
+	background-color: #fff;
+    box-shadow: -1px -1px 2px #929497 inset;
+    color: #231f20;
+    display: inline-block;
+    font-size: 40px;
+    line-height: 40px;
+    padding: 15px;
+    text-shadow: 0 0 1px #929497;
+    text-transform: uppercase;
+    width: 270px;
+}
+
+
+/* #Slide09
+--------------------------------------------------------*/
+#Slide09 {
+	background-color: #72be44;
+	padding: 55px 0;
+}
+#Slide09 h1 {
+	background-image: url("../images/parallax/contact01.png");
+	color: #72be44;
+    font-size: 60px;
+    height: 119px;
+    line-height: 90px;
+    margin: 0 auto 20px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 328px;
+}
+#Slide09 P {
+	float: left;
+	margin: 0 0 10px 20px;
+    width: 444px;
+}
+#Slide09 P LABEL {
+    color: #fff;
+    float: left;
+    font-size: 22px;
+    text-transform: uppercase;
+    width: 100%;
+}
+#Slide09 P INPUT[type="text"], #Slide09 P INPUT[type="email"], #Slide09 P TEXTAREA {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    box-shadow: 1px 1px 0 #3b7325 inset, -1px -1px 0 #b8dea1 inset;
+    color: #fff;
+    font-size: 30px;
+    padding: 10px;
+    text-transform: uppercase;
+    width: 424px;
+}
+#Slide09 P TEXTAREA {
+	height: 138px;
+}
+#Slide09 P INPUT[type="submit"] {
+    background-image: url("../images/parallax/contact-btn.png");
+    border: medium none;
+    height: 57px;
+    margin: 22px 0 0;
+    width: 444px;
+}

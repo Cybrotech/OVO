@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+{% load widget_tweaks %}
+
+{% include 'mainmenu.html' %}
+{% include 'sectionmenu.html' %}
+<form action="." method="post">{% csrf_token %}
+
+  <div class="container">
+
+    <legend class="alternate add-w">Add Websites</legend>
+    <legend id="errorForm" class="error">
+      {% if message %}
+      {{ message }}
+      {% endif %}
+    </legend>
+
+    <div id="entry1">
+
+      <fieldset class="last">
+
+        <div class="col-md-1">
+
+          <input class="required" type="url" name="url-1" placeholder="URL" class="inputurl" autocomplete="off">
+
+        </div>
+
+        <div class="col-md-2">
+
+          <input class="required" type="text" name="sitename-1" placeholder="Site Name" class="inputsiten" autocomplete="off">
+
+        </div>
+
+        <div class="col-md-2">
+          
+
+            <select class="custom required" name="vcat-1">
+
+              <option value="-1">Vertical Category</option>
+              {% for each in all_categories %}
+              <option value="{{each.category_name}}">{{each.category_name}}</option>
+              {% endfor %}
+
+            </select>
+          
+
+        </div>
+
+        <div class="col-md-2">
+
+          <input class="required" type="number" name="usersxday-1" placeholder="Unique users per day" class="inputusersxday" autocomplete="off">
+
+        </div>
+
+        <div class="col-md-2">
+
+          <input class="required" type="number" name="viewxday-1" placeholder="Page Views Per Day" class="inputviewxday" autocomplete="off">
+
+        </div>
+
+        <div class="col-md-2">
+
+          <input class="required" type="number" name="usersxmonth-1" placeholder="Unique users per month" class="inputusersxmonth" autocomplete="off">
+
+        </div>
+
+        <div class="col-md-2">
+
+          <input class="required uniqueclass" type="number" name="viewxmonth-1" placeholder="Page Views Per month" class="input" autocomplete="off">
+          <input type="hidden" name="redirect_field" value="default">
+        </div>
+
+
+
+        <div class="sections col-md-1 inactive">
+
+          <legend class="title">Sections</legend>        
+
+          <div class="addSection">
+
+            <div class="col-md-2">
+
+              <input type="url" name="url-1-sectionurl-1" placeholder="URL" autocomplete="off">
+
+            </div>
+
+            <div class="col-md-2">
+
+              <input type="text" name="url-1-sectionname-1" placeholder="Section Name" autocomplete="off">
+
+            </div>
+            <p>
+              <a onclick="delete_website_section(this)" href="javascript:void(0)">Delete</a>
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="col-md-1">
+
+          <a class="addwebsitesections" onclick="add_new_section(this)"><legend class="title">Add Websites Sections</legend><span class="btnAdd">+</span></a>
+
+        </div>
+
+      </fieldset>
+
+    </div>
+
+    
+
+    <!--toggle completed fields-->
+
+    <div id="addedSites" class="col-md-1">
+      <div id="sitesListing">
+        <!-- sites entries -->
+        {% for website in added_websites %}
+    <!--entry 1-->
+      <div class="addedSite">
+        <div class="addedSiteName">
+          <p>{{website.website.site_name}}</p>
+          <a class="deleteSite" onclick="remove_site(this, '{{website.website.url}}')">&mdash;</a>
+        </div>
+        <div id="entry2">
+          <fieldset class="last">
+            <div class="col-md-1">
+              <input  type="url" id="url" placeholder="URL" class="inputurl" autocomplete="off" value="{{website.website.url}}">
+            </div>
+            <div class="col-md-2">
+              <input  type="text" id="sitename" placeholder="Site Name" class="inputsiten" autocomplete="off" value="{{website.website.site_name}}">
+            </div>
+            <div class="col-md-2">
+              <select class="custom required" name="vcat">
+                <option value="{{website.website.vertical_category.category_name}}">{{website.website.vertical_category.category_name}}</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <input  type="number" id="usersxday" placeholder="Unique users per day" class="inputusersxday" autocomplete="off" value="{{website.website.unique_users_per_day}}">
+            </div>
+            <div class="col-md-2">
+              <input  type="number" id="viewxday" placeholder="Page Views Per Day" class="inputviewxday" autocomplete="off" value="{{website.website.page_views_per_day}}">
+            </div>
+            <div class="col-md-2">
+              <input  type="number" id="usersxmonth" placeholder="Unique users per month" class="inputusersxmonth" autocomplete="off" value="{{website.website.unique_users_per_month}}">
+            </div>
+            <div class="col-md-2">
+              <input  type="number" id="viewxmonth" placeholder="Page Views Per month" class="input" autocomplete="off" value="{{website.website.page_views_per_month}}">
+            </div>
+            {% if website.sections|length != 0 %}
+            <div class="sections col-md-1">
+              <legend class="title">Sections</legend>
+              {% for each in website.sections %}
+              <div class="addSection">
+                <div class="col-md-2">
+                  <input  type="url" id="sectionurl0" placeholder="URL" autocomplete="off" value="{{each.url}}">
+                </div>
+                <div class="col-md-2">
+                  <input  type="text" id="sectionname0" placeholder="Section Name" autocomplete="off" value="{{each.section_name}}">
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="col-md-1">
+              <a class="addwebsitesections"><legend class="title">Add Websites Sections</legend><span class="btnAdd">+</span></a>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+        {% endfor %}
+      </div>
+    <!-- end toggle completed fields -->
+    <div class="col-md-1 right">
+
+      <!-- <a class="button alternate small" onclick="ajax_save_web()">Save and add another web</a> -->
+      <input class="button alternate small" type="submit" value="Save and add another web">
+
+      <a class="button alternate grey small moved" onclick="submit_and_redirect()" >Save and go to my widgets</a>
+
+    </div>
+
+  </div>
+
+</form>
+
+{% endblock %}
+{% block custom_scripts %}
+<script src="{% static 'audience/js/ajax_handle.js' %}"></script>
+<script type="text/javascript">
+website_count = 1;
+all_categories = "{{js_categories}}".split(',');
+
+function delete_website_section(el){
+    $(el).parent().parent().remove();
+}
+
+function submit_and_redirect(){
+  $('input[name="redirect_field"]').val('redirect');
+  $('form').submit();
+}
+
+function remove_site(el, url){
+  ajax_request("delete_website", 'empty', {data: "{'url': '" + url + "'}"});
+  $(el).parent().parent().remove();
+}
+
+function add_new_section(el){
+    var uniqueElem  = $(el).parent().parent().find('.uniqueclass');
+    var parentName = uniqueElem[0].name;
+    var parentCount = parentName.slice(parentName.length-1, parentName.length);
+
+    var currentElem  = $(el).parent().parent().find('.sections');
+    if (currentElem.hasClass('inactive')){
+        currentElem.switchClass('inactive','active');
+    }
+    else {
+      var section_html = [];
+      var numElem = currentElem.find('.addSection').length + 1;
+      section_html.push('<div class="addSection">');
+      section_html.push('<div class="col-md-2"><input type="url" name="url-'+ parentCount +'-sectionurl-'+numElem.toString()+'" placeholder="URL" autocomplete="off">');
+      section_html.push('</div><div class="col-md-2"><input type="text" name="url-'+ parentCount +'-sectionname-'+numElem.toString()+'" placeholder="Section Name" autocomplete="off">');
+      section_html.push('</div><p><a onclick="delete_website_section(this)" href="javascript:void(0)">Delete</a></p></div>');
+      var final_section_html = section_html.join('');
+      currentElem.append(final_section_html);
+  }
+// })
+}
+
+// function add_new_web(){
+//   website_count = website_count + 1;
+//   var website_html = [];
+//   website_html.push('<div class="addedSite"><div class="addedSiteName active"><p>Site Name</p><a class="deleteSite" onclick="remove_category(this)">&mdash;</a>');
+//   website_html.push('</div><div id="entry' + website_count.toString()+'"><fieldset class="last"><div class="col-md-1">');
+//   website_html.push('<input class="required" type="url" name="url-'+ website_count.toString() +'" placeholder="URL" class="inputurl" autocomplete="off">');
+//   website_html.push('</div><div class="col-md-2"><input class="required" type="text" name="sitename-'+ website_count.toString() +'" placeholder="Site Name" class="inputsiten" autocomplete="off">');
+//   website_html.push('</div><div class="col-md-2"><select class="custom required" name="vcat-'+ website_count.toString() +'">');
+//   website_html.push('<option value="-1">Vertical Category</option>');
+//   for(i=0;i<all_categories.length;i++){
+//     website_html.push('<option value="'+ all_categories[i] +'">'+ all_categories[i] +'</option>');
+//   }
+//   website_html.push('</select></div><div class="col-md-2"><input class="required" type="number" name="usersxday-'+ website_count.toString() +'" placeholder="Unique users per day" class="inputusersxday" autocomplete="off">');
+//   website_html.push('</div><div class="col-md-2"><input class="required" type="number" name="viewxday-'+ website_count.toString() +'" placeholder="Page Views Per Day" class="inputviewxday" autocomplete="off">');
+//   website_html.push('</div><div class="col-md-2"><input class="required" type="number" name="usersxmonth-'+ website_count.toString() +'" placeholder="Unique users per month" class="inputusersxmonth" autocomplete="off">');
+//   website_html.push('</div><div class="col-md-2"><input class="required uniqueclass" type="number" name="viewxmonth-'+ website_count.toString() +'" placeholder="Page Views Per month" class="input" autocomplete="off">');
+//   website_html.push('</div><div class="sections col-md-1 inactive"><legend class="title">Sections</legend><div class="addSection"><div class="col-md-2">');
+//   website_html.push('<input class="required" type="url" name="url-'+ website_count.toString() +'-sectionurl-1" placeholder="URL" autocomplete="off"></div><div class="col-md-2">');
+//   website_html.push('<input class="required" type="text" name="url-'+ website_count.toString() +'-sectionname-1" placeholder="Section Name" autocomplete="off"></div></div></div>');
+//   website_html.push('<div class="col-md-1"><a class="addwebsitesections" onclick="add_new_section(this)"><legend class="title">Add Websites Sections</legend><span class="btnAdd">+</span></a></div></fieldset></div></div>');
+
+//   var final_website_html = website_html.join('');
+//   $('#sitesListing').append(final_website_html);
+
+// }
+
+// function remove_category(el){
+//   var addedSections  = $(el).parent().parent().find('.addSection');
+//   if (addedSections.parent().attr('class').indexOf('inactive') == -1){
+//     // proceed with delete
+//     addedSections[addedSections.length -1].remove();
+//   }
+//   else{
+//     return;
+//   }
+// }
+  
+</script>
+{% endblock %}

@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Add Content{% endblock %}
+
+{% block content %}
+        {# $loadcheckboxjs = true; #}
+{% with ext="content" %}
+{% include 'mainmenu.html' %}
+{% endwith %}
+{% with section="content" %}
+{% include 'sectionmenu.html' %}
+{% endwith %}
+
+
+<div class="fullheight container">
+  <nav>
+    <ul id="widgetsmenu" class="item3">
+      <!-- class="completed" adds the turquoise bar at the bottom. class="active" adds the turquoise bar + the arrow -->
+      <legend id="errorForm" class="error">
+      {% if message %}
+      {{ message }}
+      {% endif %}
+    </legend>
+
+      <li id="choose_sites" class="active"><a class="add" href="/website/add/">+</a><a>Choose your sites<span>{{ websites|length }}</span></a></li>
+      <li id="choose_content"><a>Choose your content<span>{{video_count}}</span></a></li>
+      <li id="choose_widgets"><a>Choose your widgets</a></li>
+        </ul>
+    </nav>
+  <form id="chooselists" class="fullheight col-md-1" method="post" action='.'>{% csrf_token %}
+    <div id="choose_sites_list" class="col-md-3 fullheight active">
+      <a class="deselect"><span>Deselect All</span></a>
+      {% for website in websites %}
+      <!--site-->
+      <fieldset>
+        <div class="item">
+          <label>{{ website.site_name }}</label>
+           <label class="checkbox-white w-active chooselist-ch check_all" for="site-{{forloop.counter}}"></label><input type="checkbox" name="site-{{forloop.counter}}" value="{{ website.id }}" class="checkall checkbox site original-ch i-ws" style="float: left;" checked>
+           </div>
+        <ul class="sections">
+          {% for section in website.sections.all %}
+          <!--sections-->
+          <li><label>{{ section.section_name }} </label> <label class="checkbox-white w-active chooselist-ch" for="site-{{forloop.parentloop.counter}}-section-{{forloop.counter}}"></label><input type="checkbox" name="site-{{forloop.parentloop.counter}}-section-{{forloop.counter}}" value="{{ section.id }}" class="checkbox section original-ch i-s" checked></li>
+          {% endfor %}
+          <!--end sections-->
+        </ul>
+      </fieldset>
+      <!--end site-->
+      {% endfor %}
+      <!--site-->
+      </div>
+    <div id="choose_content_list" class="col-md-3 fullheight inactive">
+      <a class="deselect"><span>Deselect All</span></a>
+      <!--content-->
+
+      {% for each_owner in collection_data %}
+      {% if each_owner.owner_video_count != 0 %}
+      <fieldset>
+        <div class="item">
+          <label>{{ each_owner.owner.name }}</label>
+           <label class="checkbox-white w-active chooselist-ch check_all" for="owner-{{forloop.counter}}"></label><input type="checkbox" name="owner-{{forloop.counter}}" value="{{ each_owner.owner.id }}" class="checkall checkbox site original-ch i-cp" style="float: left;" checked>
+           </div>
+        <ul class="sections">
+
+          {% for each_collection in each_owner.collections %}
+          <!--sections-->
+          {% if each_collection.videos|length != 0 %}
+          <li><label class="overlay-btn-class" onclick="videos_popover('{{each_collection.collection.name}}')">{{ each_collection.collection.name }}</label> <label class="checkbox-white w-active chooselist-ch" for="owner-{{forloop.parentloop.counter}}-collection-{{forloop.counter}}"></label><input type="checkbox" name="owner-{{forloop.parentloop.counter}}-collection-{{forloop.counter}}" value="{{ each_collection.collection.name }}" class="checkbox section original-ch i-c" checked></li>
+          <div class="hidden" id="hidden-inputs">
+            {% for each_vid in each_collection.videos %}
+            <input type="checkbox" name="owner-{{forloop.parentloop.parentloop.counter}}-collection-{{forloop.parentloop.counter}}-video-{{forloop.counter}}" id="{{each_vid.video_url}}" value="{{each_vid.id}}" checked>';
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endfor %}
+          <!--end sections-->
+        </ul>
+      </fieldset>
+      {% endif %}
+      {% endfor %}
+      
+      <!--end content-->
+    </div>
+    <div id="choose_widgets_list" class="col-md-3 fullheight last inactive">
+      {% for widget_format in widget_formats %}
+      <fieldset>
+      <div class="item">
+      <input type="radio" name="widget_format" value="{{ widget_format.id }}" style="float: right;margin-top: 30px;" class="required">
+        <a href="#" onclick="open_dummy_overlay()">{{ widget_format.name }}</a>
+      </div>
+      </fieldset>
+      {% endfor %}
+      <!-- <input type="submit" class="button" value="Save and Continue"> -->
+    <div id="save" class="active"> <!-- I'm not sure when this button has to appear. To toggle it, change class to "active" -->
+      <input type="submit"  value="Save and Continue">
+      </div>
+    </div>
+    </form>
+</div>
+
+
+
+        <div class="overlay-container" id="list-overlay">
+      <div class="window-container zoomin" id="list-window">
+              <div id="videos-container"> 
+                  <div class="close-overlay" onclick="close_overlay('list-overlay', 'list-window')"></div>
+                <h1 id="coll_name">Seeds</h1>
+                      <div id="links-videos">
+                        <label for="select-all">Select all</label>
+                            <input id="select-all" type="checkbox" class="select-vid"><a class="deselect-vid">Deselect all</a> <a href="#">Save</a>
+                      </div>
+                <div id="videos">
+                        <fieldset id="video-container">
+
+                            </fieldset>
+                           
+                    </div>
+                    </div>
+            </div>
+    </div>
+
+<!-- Begin overlay -->
+<div class="overlay-container" id="detail-overlay">
+    <div class="window-container zoomin" id="detail-window">
+            <div class="close-overlay" onclick="close_overlay('detail-overlay', 'detail-window')"></div>
+              <div id="video-container">  
+                  <video width="100%" controls id="video-preview" name="video-preview" style="display:none">
+                     Your browser does not support the video tag.
+                     </video>
+                     <iframe id="vimeo-preview" width="943" height="562" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:none"></iframe>
+                    
+                     <iframe width="943" height="562" id="youtube-preview" frameborder="0" allowfullscreen style="display:none"></iframe>
+                        <h1 id="video-title">Geisha</h1>
+                        <h2 id="video-duration">00:00:00</h2>
+                        <span class="description">Description</span>
+                        <p id="video-description">Apiciis et est magnam facitiu mquibus ute nones dolenti oreiciurita santendam et faces dellabo repedio quatem cum atis autatiu scimus estius earum landi que poriati consed que int. At apicatquos explite mporro totaspis etur At apicatquos explite mporro totaspis eture mporro totaspis etur At apicatquos explite mporro totaspis etur</p>
+              </div>
+    </div>
+  </div>
+<!-- End overlay -->
+
+<div class="overlay-container" id="webpage-overlay">
+    <div class="window-container zoomin" id="webpage-window">
+            <div class="close-overlay" onclick="close_overlay('webpage-overlay', 'webpage-window')"></div>
+              <div id="video-container">  
+                        <h1>Dummy webpage</h1>
+                 <video width="100%" controls id="video-dummy" name="video-dummy" style="display:none">
+                 Your browser does not support the video tag.
+                 </video>
+                 <iframe id="vimeo-dummy" width="943" height="562" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:none"></iframe>
+                
+                 <iframe width="943" height="562" id="youtube-dummy" frameborder="0" allowfullscreen style="display:none"></iframe>
+                     
+              </div>
+    </div>
+  </div>
+
+{% endblock content %}
+{% block custom_styles %}
+<style type="text/css">
+  body, html {
+  min-height: 100% !important;
+  }
+</style>
+{% endblock %}
+{% block custom_scripts %}
+<script src="{% static 'audience/js/ajax_handle.js' %}"></script>
+<script type="text/javascript">
+function open_dummy_overlay(){
+  open_overlay('webpage-overlay', 'webpage-window')
+  var video_path = $('#hidden-inputs').children().first().attr('id');
+
+    if(video_path.indexOf("vimeo") > -1){
+        var mypath = video_path.split('/');
+        mypath = '//player.vimeo.com/video/' + mypath[mypath.length - 1];
+        $('#youtube-dummy').attr('style', 'display:none');
+        $('#video-dummy').attr('style', 'display:none');
+
+        $('#vimeo-dummy').attr('style', 'display:initial');
+        $('#vimeo-dummy').attr('src', mypath);
+      }
+      else if(video_path.indexOf("youtube") > -1){
+        // youtube url
+        //https://www.youtube.com/watch?v=eN9XX-dd0LQ
+        var mypath = video_path.split('=');
+        mypath = 'https://www.youtube.com/embed/' + mypath[mypath.length - 1];
+        $('#video-dummy').attr('style', 'display:none');
+        $('#vimeo-dummy').attr('style', 'display:none');
+
+        $('#youtube-dummy').attr('src', mypath);
+        $('#youtube-dummy').attr('style', 'display:initial');
+      }
+      else{
+        // local video
+        $('#youtube-dummy').attr('style', 'display:none');
+        $('#vimeo-dummy').attr('style', 'display:none');
+
+        $('#video-dummy').attr('style', 'display:initial');
+        $('#video-dummy').attr('src', video_path);
+        // ajax_request("get_video_duration", 'video_duration_success', {data: "{'video_path': '" + video_path + "'}"});
+      }
+
+}
+
+function open_overlay(overlay, window_cont){
+  // $('#'+ overlay).fadeOut().end().find('.window-container').removeClass('window-container-visible');
+          $('#'+overlay).fadeIn(function() {
+           window.setTimeout(function(){
+            $('#'+ window_cont).addClass('window-container-visible');
+           }, 100);
+
+          });
+}
+function close_overlay(overlay, window_cont){
+    $('#'+ overlay).fadeOut().end().find('#'+ window_cont).removeClass('window-container-visible');
+}
+
+function video_detail_popover(video_detail){
+  open_overlay('detail-overlay', 'detail-window');
+  var video_detail_list = video_detail.split('!#?^');
+  console.log(video_detail_list);
+  set_video_details(video_detail_list[0], video_detail_list[1], video_detail_list[2]);
+
+}
+
+  function videos_popover(collection_name){
+          open_overlay('list-overlay', 'list-window');
+          $('#coll_name').text(collection_name);
+    got_videos = '';
+        $.ajax({
+        url: "/website/owner_api/",
+        success: function(data) {
+          owner_data = JSON.parse(data);
+          $('#video-container').empty();
+          for(i=0;i<owner_data.length;i++){
+            var coll = owner_data[i].collections;
+            for(j=0;j<coll.length;j++){
+                if(coll[j].collection.name == collection_name){
+                    var got_videos = coll[j].videos;
+                    // got_videos is all videos in coll[j].collection.id
+                    for(k=0;k<got_videos.length;k++){
+                      //create hidden input
+                      // var inp_html = '<input type="checkbox" name="owner-'+ owner_data[i].owner.id+'-collection-'+ coll[j].collection.id+'-video-'+ got_videos[k].id +'" id="'+ got_videos[k].video_url +'" value="'+ got_videos[k].id +'" checked>';
+                      // $('#hidden-inputs').append(inp_html);
+
+                        var thumb_split = got_videos[k].thumbnail.split('/media/');
+                        if (thumb_split.length == 1){
+                          var thumb_url = got_videos[k].thumbnail;
+                        }
+                        else{
+                          var thumb_url = '/media/' + thumb_split[1];
+                        }
+
+                        var video_detail_str = [got_videos[k].title, got_videos[k].description, got_videos[k].video_url].join('!#?^');
+                        var thumb_html = '<div class="videothumb"><h5>'+ got_videos[k].title +'</h5><label class="checkbox-white w-active" for="vid-"'+ k.toString() +'></label><input class="original-ch" type="checkbox" id="vid-'+ k.toString() +'" value="" onchange="check_vid_input(this, \'' + owner_data[i].owner.id + '\', \'' + coll[j].collection.id + '\', \'' + got_videos[k].id + '\')" checked><a href="#" class="thumb"><i class="icon-play"></i><img onclick="video_detail_popover(\''+ video_detail_str +'\')" src="'+ thumb_url +'" width="220" alt="'+ got_videos[k].title +'" title="'+ got_videos[k].title +'" /></a></div>';
+                       $('#video-container').append(thumb_html);
+                    }
+          
+                return;
+                }
+            }
+          }
+          
+        }
+        });
+  }
+
+function check_vid_input(el, owner_id, collection_id, video_id){
+  var video_name = 'owner-' + owner_id + '-collection-' + collection_id + '-video-' + video_id;
+  var cur_video_obj = $('input[name="' + video_name + '"]');
+  if ( $(el).prop('checked') == true ){
+      cur_video_obj.attr('checked', true);
+      console.log('checked');
+  }
+  else{
+    cur_video_obj.attr('checked', false);
+    console.log('unchecked');
+  }
+}
+
+</script>
+{% endblock %}

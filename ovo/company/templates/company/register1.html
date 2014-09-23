@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-6">
+    <form role="form" action="." method="post" class="form-horizontal">
+      {% csrf_token %}
+      <fieldset>
+        <legend>{{ form_title }}</legend>
+        {% if form.non_field_errors %}
+        <p class="error">
+          {% for error in form.non_field_errors %}
+          {{ error }}
+          {% endfor %}
+        </p>
+        {% endif %}
+        {% for field in form.visible_fields %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          <div class="col-md-6">
+            {{ field }}
+          </div>
+          {% if field.errors %}
+          <p class="error">
+            {% for error in field.errors %}
+            {{ error }}
+            {% endfor %}
+          </p>
+          {% endif %}
+        </div>
+        {% endfor %}
+        <div class="col-md-offset-2 col-lg-6">
+          <div class="form-controls">
+            {% for field in form.hidden_fields %}
+            {{ field }}
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" value="Submit" />
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

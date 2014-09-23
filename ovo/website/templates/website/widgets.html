@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}My Widgets{% endblock %}
+
+{% block content %}
+
+{% include 'mainmenu.html' %}
+{% include 'sectionmenu.html' %}
+
+<div id="my-widgets" class="fullheight container">
+	<!--widget type-->
+	{% for each_type in all_widgets %}
+	<div class="widget-type col-md-1">
+		<div class="widget-type-name bar">
+			<p>{{each_type.widget_type.name}} ({{each_type.widget_count}})</p>
+			<a href="#" id="{{each_type.widget_type.name}}" class="overlay-btn-class">Technical</a>
+		</div>
+			
+		<div class="widget-list">
+			<!--widget-->
+			{% for each_widget in each_type.widgets %}
+			<div class="widget col-md-1">
+				<div class="bar">
+					<p class="col-md-3 center">{{each_widget.id}}</p>
+					<div class="col-md-3 right"><a href="/website/widget/edit/{{each_widget.id}}">Edit</a></div>
+					<div class="col-md-3 center"><a href="#">Go to Dashboard</a></div>
+				</div>
+				<div class="widget-content col-md-1">
+					<div class="col-md-3">
+						<p>Your Sites<span>{{each_widget.sites.all|length}}</span></p>
+						<p>Your Content<span>{{each_widget.clips.all|length}}</span></p>
+					</div>
+					<div class="col-md-2_3 code">
+						<h4 class="green">Embedded</h4>
+						<p>&lt;a href='http://www.ovo.com/la-persistenza-della-memoria' class='ovoKeyword' id='{{each_widget.id}}' name='8855' rel='#ovoTooltipWrapper' title='La persistenza della memoria'>surrealismo &lt;/a></p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<!--end widget-->
+		</div>		
+	</div>
+	<!--end widget type-->
+	{% endfor %}
+	
+	<div class="col-md-1 right">
+		<a class="button alternate" href="#">Add Another</a>
+	</div>
+</div>
+
+<div class="overlay-container">
+	<div class="window-container zoomin">
+    	<div id="technical">	
+    		<h1>Technical Ovo Pod</h1>
+    		<div class="close-overlay">
+    			<input type="hidden" id="hidden_widget_format" value="">
+    		</div>
+    		<div id="video-size">
+    		<p style="margin-left: 240px;">
+    			<input type="radio" name="widget_size" value="300*250">300&times;250
+				<input type="radio" name="widget_size" value="700*500">700&times;500
+
+			</p>
+    		</div>
+        	<span class="description">Description</span>
+			<p>Apiciis et est magnam facitiu mquibus ute nones dolenti oreiciurita santendam et faces dellabo repedio quatem cum atis autatiu scimus estius earum landi que poriati consed que int. At apicatquos explite mporro totaspis etur At apicatquos explite mporro totaspis eture mporro totaspis etur At apicatquos explite mporro totaspis etur</p>
+    	</div>
+    </div>
+</div>
+
+{% endblock %}
+{% block custom_scripts %}
+<script src="{% static 'audience/js/ajax_handle.js' %}"></script>
+<script type="text/javascript">
+    $(".overlay-btn-class").click(function(){
+    	var widget_name = $(this).attr('id');
+    	$('#hidden_widget_format').val(widget_name);
+
+          $('.overlay-container').fadeIn(function() {
+
+           window.setTimeout(function(){
+            $('.window-container.'+'zoomin').addClass('window-container-visible');
+           }, 100);
+
+          });
+ });
+        $('.close-overlay').click(function() {
+        		var widget_name = $('.close-overlay').children()[0].value;
+        		var widget_size = $('input:radio[name=widget_size]:checked').val();
+        		ajax_request("set_widgetformat_size", 'empty', {data: "{'widget_name': '" + widget_name + "', 'widget_size': '" + widget_size + "'}"});
+                $('.overlay-container').fadeOut().end().find('.window-container').removeClass('window-container-visible');
+        });
+
+</script>
+{% endblock %}

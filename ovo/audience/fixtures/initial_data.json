@@ -1,0 +1,100 @@
+[
+  {
+    "model": "audience.topic",
+    "pk": 1,
+    "fields": {
+      "topic": "Artists & creatives"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 2,
+    "fields": {
+      "topic": "Art & Design"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 3,
+    "fields": {
+      "topic": "Athletes"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 4,
+    "fields": {
+      "topic": "Cinema"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 5,
+    "fields": {
+      "topic": "Culture"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 6,
+    "fields": {
+      "topic": "Entrepreneurs"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 7,
+    "fields": {
+      "topic": "Economy & Politic"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 8,
+    "fields": {
+      "topic": "History"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 9,
+    "fields": {
+      "topic": "Intellectuals & scientists"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 10,
+    "fields": {
+      "topic": "Music & Dance"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 11,
+    "fields": {
+      "topic": "Politicians and Military"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 12,
+    "fields": {
+      "topic": "Science & Health"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 13,
+    "fields": {
+      "topic": "Sport"
+    }
+  },
+  {
+    "model": "audience.topic",
+    "pk": 14,
+    "fields": {
+      "topic": "Tourism"
+    }
+  }
+]

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="col-md-1">
+    <div id="mailconfir">
+      <h1>Your request has been sent<br />to OVO Native extension<br />and you will soon receive<br /> an email</h1>
+    </div>
+    </div>
+</div>
+{% endblock %}
+{% block custom_scripts %}
+<script type="text/javascript">
+	setTimeout(function() {
+     window.location.replace("/"); // Do something after 5 seconds
+}, 15000);
+</script>
+{% endblock %}

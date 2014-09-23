@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>{{ page_title }}</title>
+    <meta charset="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="GMDS">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}company/css/styles.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}company/css/jquery.custom-scrollbar.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}company/css/fontello.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    {% block custom_styles %}
+    {% endblock %}
+  </head>
+  <body>
+    <!--[if lt IE 7]><p class="browsehappy">Stai utilizzando un browser <strong>datato</strong>. Perfavore <a href="http://browsehappy.com/">aggiorna il tuo browser</a>.</p><![endif]-->
+    <div class="container">
+      <div class="languagebar">
+        <label>Lingua</label>
+        <select class="inp_language">
+          <option selected="selected" value="1">Italiano</option>
+          <option value="2">Inglese</option>
+        </select>
+      </div>
+    </div>
+    <header>
+      <div class="container">
+        <div class="col-md-4 left">
+          <div class="center inline">
+            <div class="social">
+              <a href="#"><i class="icon-twitter"></i></a>
+              <a href="#"><i class="icon-facebook"></i></a>
+            </div>
+            {% if user.is_authenticated %} 
+             <a id="login" href="/logout/">Disconnessione</a>
+            {% else %} 
+            <a id="login" href="/login/">Accedi</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-2 center">
+          <a href="/" class="logo">
+            <h1>OVO</h1>
+            <span>Native Extension</span>
+          </a>
+        </div>
+      </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}company/js/jquery-ui.min.js"></script>
+    <script src="{{ STATIC_URL }}company/js/jquery.custom-scrollbar.js"></script>
+    <script src="{{ STATIC_URL }}company/js/scripts.js"></script>
+    <script src="{{ STATIC_URL }}company/js/Chart.min.js"></script>
+    <script src="{{ STATIC_URL }}company/js/jquery.flapper.js"></script>
+    <script src="{{ STATIC_URL }}audience/js/jquery.placeholder.js"></script>
+
+    {% block custom_scripts %}
+    {% endblock %}
+  </body>
+</html>

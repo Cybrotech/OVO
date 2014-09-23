@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load widget_tweaks %}
+
+<form id="form" action="." method="post">
+  {% csrf_token %}
+  <div class="container">
+    <legend id="errorForm" class="error">
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+      {% if message %}
+      {{ message }}
+      {% endif %}
+      {% for field in website_form %}
+      {% for error in field.errors %}
+      {{ error }}
+      {% endfor %}
+      {% endfor %}
+    </legend>
+    <legend>Company</legend>
+    <fieldset>
+      <div class="col-md-2">
+        {{ form.name|attr:"placeholder:Name"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:20"}}
+        </div>
+      <div class="col-md-2">
+        {{ form.vat|attr:"placeholder:VAT"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:15"}}
+        </div>
+      <div class="col-md-3_4">
+        {{ form.address|attr:"placeholder:Address"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:100"}}
+        </div>
+      <div class="col-md-4">
+        {{ form.number|attr:"placeholder:Nº"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:15"}}
+        </div>
+      <div class="col-md-2">
+        {{ form.city|attr:"placeholder:City"|attr:"class:required"|attr:"autocomplete:off"}}
+        </div>
+      <div class="col-md-4">
+        {{ form.postal_code|attr:"placeholder:Postal Code"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:8"}}
+        </div>
+      <div class="col-md-4">
+        {{ form.province|attr:"placeholder:Province"|attr:"class:required"|attr:"autocomplete:off"}}
+        </div>
+      </fieldset>
+    <fieldset class="last">
+      <legend>You</legend>
+      <div class="col-md-2">
+        {{ form.first_name|attr:"placeholder:Name"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:20"}}
+        </div>
+      <div class="col-md-2">
+        {{ form.surname|attr:"placeholder:Surname"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:20"}}
+        </div>
+      <div class="col-md-2">
+        {{ form.email|attr:"placeholder:Email"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:40"}}
+        </div>
+      <div class="col-md-2">
+        {{ form.mobile_number|attr:"placeholder:Mobile Number"|attr:"class:required"|attr:"autocomplete:off"}}
+        </div>
+        
+      <div class="col-md-2">
+        {{ form.role|attr:"placeholder:Role"|attr:"class:required"|attr:"autocomplete:off"|attr:"maxlength:15"}}
+        </div>
+      
+      <div class="col-md-2">
+        {{ form.password|attr:"placeholder:Password"|attr:"class:required"|attr:"autocomplete:off"}}
+        </div>
+      <div class="col-md-2">
+        {{ form.confirm_password|attr:"placeholder:Confirm Password"|attr:"class:required"|attr:"autocomplete:off"}}
+        </div>
+      </fieldset>
+    </div>
+  <div class="grey">
+    <div class="container">
+      <div class="col-md-1">
+        <p><input class="required" type="checkbox" id="terms" name="terms"> Ho letto e accetto i Terms & Conditions di Native Extension</p>
+        <p>OVO si riserva di accettare il sito o i siti che richiedono l'adesione al Network. Quando accettato l'utente ricever&agrave; una mail di conferma con i codici di accesso per poter procedere all&rsquo;installazione dei widget</p>
+        <p>Scarica i Terms & Conditions di Native Extension</p>
+        </div>
+      <div class="col-md-2 left">
+        <a href="{{ STATIC_URL }}company/terms.pdf" target="_blank" class="button grey">PDF</a>
+        </div>
+      <div class="col-md-2 right">
+        <input type="hidden" name="register_for" value="website_owner" />
+        <input class="required button" type="submit" value="Start Adding Websites">
+        </div>
+      </div>
+    </div>
+</form>
+{% endblock %}
+{% block custom_scripts %}
+<script type="text/javascript">
+// $('#id_email').on('keyup', function(){
+//   $('#id_email').attr('style', 'text-transform: lowercase');
+//   if($('#id_email').val().trim() === ""){
+//     $('#id_email').attr('style', 'text-transform: uppercase');
+//   }
+// });
+if($('#errorForm').text().indexOf('EMAIL') != -1 ){
+    $('#id_email').addClass('error');
+  }
+  if($('#errorForm').text().indexOf('PASSWORDS') != -1 ){
+    $('#id_password').addClass('error');
+    $('#id_confirm_password').addClass('error');
+  }
+  if($('#errorForm').text().indexOf('MOBILE') != -1 ){
+    $('#id_mobile_number').addClass('error');
+  }
+
+
+
+</script>
+{% endblock %}

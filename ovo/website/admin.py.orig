@@ -1,0 +1,15 @@
+from django.contrib import admin
+
+# Register your models here.
+<<<<<<< HEAD
+from .models import Category, Website, Section
+
+admin.site.register(Category)
+admin.site.register(Website)
+admin.site.register(Section)
+=======
+from .models import Category, WidgetFormat
+
+admin.site.register(Category)
+admin.site.register(WidgetFormat)
+>>>>>>> e44a6515926abdef3bfb3f2d1a1c4b24bd776a37

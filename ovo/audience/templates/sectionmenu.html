@@ -1,0 +1,70 @@
+<nav id="sectionmenu">
+	<div class="container">
+		<!--menu according to section-->
+		<!--content extension-->
+		{% if section == 'content' %}
+		<ul class="item5">
+			<li class="item" id="dashboard">
+				<a href="#">Dashboard</a>
+			</li>
+			<li class="item" id="widgets">
+				<a href="/website/widget/add/">My Widgets</a>
+			</li>
+			<li class="item" id="campaigns">
+				<a href="#">My Campaigns</a>
+			</li>
+			<li class="item" id="sell">
+				<a href="#">Sell your Inventory</a>
+			</li>
+			<li class="item last" id="terms">
+				<a href="/terms/">Terms</a>
+			</li>
+		</ul>
+		{% endif %}
+		
+		<!--trading partner-->
+		{% if section == 'partner' %}
+		<ul class="item3">
+			<li class="item" id="dashboard">
+				<a href="#">Dashboard</a>
+			</li>
+			<li class="item" id="widgets">
+				<a href="widgetspartner.php">My Widgets</a>
+			</li>
+			<li class="item last" id="terms">
+				<a href="/terms/">Terms</a>
+			</li>
+		</ul>
+		{% endif %}
+		
+		<!--audience extension-->
+		{% if section == 'audience' %}
+		<ul class="item4">
+			<li class="item" id="dashboard">
+				<a href="#">Dashboard</a>
+			</li>
+			<li class="item" id="content">
+				<a href="/audience/addcontent/">My Content</a>
+			</li>
+			<li class="item" id="custom">
+				<a href="#">Custom Widget</a>
+			</li>
+			<li class="item last" id="terms">
+				<a href="/terms/">Terms</a>
+			</li>
+		</ul>
+		{% endif %}
+	</div>
+</nav>
+
+<script type="text/javascript">
+	// <!--Set as Active the current page's menu item -->
+	try {
+    	var elem = document.getElementById('{{page}}');
+    	elem.className = elem.className + ' active';
+	}
+	catch(err) {
+	    console.log('error');
+	}
+
+</script>

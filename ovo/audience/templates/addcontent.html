@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Add Content{% endblock %}
+
+{% block content %}
+
+{% include 'mainmenu.html' %}
+{% include 'sectionmenu.html' %}
+<link rel="stylesheet" href="/static/audience/css/chosen.min.css">
+
+<form id="addContent" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+<div class="container">
+    <legend id="errorForm" class="error">
+    </legend>
+    <legend id="successForm" class="success">
+    </legend>
+</div>
+    <div class="container">
+        <legend>Add Content</legend>
+        <legend id="errorForm" class="error"></legend>
+        <legend class="title">Create collection</legend>
+        <fieldset>
+            <div class="border">
+                <div class="col-md-9_10">
+                    <input class="required" type="text" id="kingpin" placeholder="Collection" autocomplete="off" name="collection">
+                    
+                    
+                </div>
+                <div class="col-md-10 right">
+                    <a id="saveCollection" class="save" onclick="save_collection('kingpin', 'topic_select')">Save</a>
+                </div>
+            </div>
+        </fieldset>
+        
+        <fieldset>
+            <div class="border selecttopic-addcontent">
+                
+                  <select class="required" id="topic_select" name="topic_select">
+                        <option value="-1">Select topic for your collection.</option>
+                        {% for each in all_topics %}
+                        <option value="{{each.topic}}">{{each.topic}}</option>
+                        {% endfor %}
+                    </select>  
+                
+            </div>
+        </fieldset>
+        
+        
+        
+        <div class="col-md-2">
+            <legend class="title">Add video in Collection</legend>
+        </div>
+        <div class="col-md-2">
+            <input type="button" id="btnAdd" value="+" onclick="add_new_video();">
+        </div>
+        <fieldset class="col-md-1">
+            <div class="border col-md-5">
+            <div class="fileupload-addcontent btn btn-primary">
+    			<span>Upload</span>
+                <input type="file" name="video-select-1" class="filebutton upload" value="upload" id="video-select-1"/>
+                </div>
+            </div>
+            <div class="col-md-4_5">
+                <div class="col-md-10 center">
+                    <p>or</p>
+                </div>
+                <div class="col-md-9_10 border">
+                    <div class="col-md-9_10">
+                        <input type="text" id="url-1" placeholder="Insert URL (youtube or vimeo)" class="url" autocomplete="off" name="video_url_1">
+                        <input type="hidden" name="redirect_field" value="default">
+                    </div>
+                    <div class="col-md-10 right">
+                        <a id="saveURL-1" class="save" onclick="save_video('video-select-1', 'saveURL-1', 'url-1', 'video_duration_1', 'video-preview-1', 'img-preview-1', 'youtube-preview-1', 'vimeo-preview-1')" name="video_save_1">Save</a>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+        <div class="col-md-6">
+            <select data-placeholder="Choose country to blacklist..." style="width:350px;" multiple class="chosen-select" id="blacklist_countries_1" name="blacklist_countries_1" >
+                {% for each in all_countries %}
+                <option value="{{each.code}}">{{each.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="video0" class="videoitem col-md-1">
+            <div class="video col-md-4_7">
+
+                <img src="{% static 'company/images/videopreview.jpg' %}" id="img-preview-1">
+
+            <video width="530" height="316" controls id="video-preview-1" name="video-preview-1" style="display:none">
+            Your browser does not support the video tag.
+            </video>
+            <iframe id="vimeo-preview-1" width="530" height="316" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:none"></iframe>
+            <!-- <object id="youtube-preview-1" width="530" height="316" style="display:none"></object> -->
+            <iframe id="youtube-preview-1" width="530" height="316" frameborder="0" allowfullscreen style="display:none"></iframe>
+            <!-- <iframe width="560" height="315" src="//www.youtube.com/embed/eN9XX-dd0LQ" frameborder="0" allowfullscreen></iframe> -->
+
+
+            </div>
+            <div class="desc col-md-3_7">
+                <input type="text" class="required" id="video_title_1" name="video_title_1" placeholder="title" autocomplete="off">
+                <p class="time" id="video_duration_1">00:00:00</p>
+                <p class="dark">Description</p>
+                <textarea rows="4" cols="50" placeholder="Insert text" id="video_desc_1" name="video_desc_1"></textarea>
+                
+                <div class="fileupload-addcontent btn btn-primary">
+    			<span>Upload your thumb</span>
+                <input type="file" name="video-thumb-1" class="filebutton upload" value="Upload your thumb" id="video-thumb-1"/>
+                </div>
+                
+                <input id="saveDesc" onclick="check_and_submit()" class="save" value="Save" readonly="true">
+            </div>
+
+            <!-- <select id="blacklist_countries" name="blacklist_countries" multiple> -->
+            
+        </div>
+    </div>
+
+<div class="container">
+    <!--toggle videos-->
+    <div id="addedVideos" class="col-md-1">
+    <!-- {# insert added videos here #} -->
+
+{% for video in added_videos %}
+        <!--video 1-->
+        <div class="addedVideo col-md-1" id="collapsable-video-{{forloop.counter}}">
+            <div class="addedVideoName">
+                <p id="mainvideotitle-{{forloop.counter}}">{{video.data.title}}</p>
+                <a class="deleteVideo" onclick="delete_video('collapsable-video-{{forloop.counter}}', 'embeded-video-{{forloop.counter}}', '{{video.id}}')">&mdash;</a>
+            </div>
+            <div id="video1" class="videoitem col-md-1">
+                <div class="video col-md-4_7">
+                {% if 'youtube.com' in video.data.video_path %}    
+                    <iframe width="530" height="316" id="embeded-video-{{forloop.counter}}" src="{{video.data.video_path}}" frameborder="0" allowfullscreen></iframe>
+                {% elif 'vimeo.com' in video.video_path %}
+                    <iframe width="530" height="316" id="embeded-video-{{forloop.counter}}" src="{{video.data.video_path}}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                {% else %}
+                    <video width="530" height="316" id="embeded-video-{{forloop.counter}}" src="{{video.data.video_path}}" controls name="video-preview">
+                    Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+                </div>
+                <div class="desc col-md-3_7">
+                    <div class="col-md-1">
+                        <input type="text" id="video-list-title-{{forloop.counter}}" name="video-list-title" placeholder="title" autocomplete="off" value="{{video.data.title}}">
+                        <p class="time">{{video.data.duration}}</p>
+                        <p class="dark">Description</p>
+                        <textarea rows="4" cols="50" id="video-list-desc-{{forloop.counter}}" name="video-list-desc" placeholder="Insert text">{{video.data.description}}</textarea>
+                        <input type="hidden" id="hidden-video-list-id-{{forloop.counter}}" name="hidden-video-list-id" value="{{video.id}}">
+                        <input type="hidden" id="hidden-video-list-title-{{forloop.counter}}" name="hidden-video-list-title" value="{{video.data.title}}">
+                        <input type="hidden" id="hidden-video-list-desc-{{forloop.counter}}" name="hidden-video-list-desc" value="{{video.data.description}}">
+                    </div>
+                    {% if not video.data.thumb_present %}
+                    <!-- <div class="col-md-2">
+                        <input type="file" name="file" class="filebutton" value="upload your thumb" id="video-list-thumb-{{forloop.counter}}"/>
+                    </div> -->
+                    <div class="col-md-2" id="thumbparent-{{forloop.counter}}">
+                    <div class="fileupload-addcontent btn btn-primary">
+                        <span>Upload your thumb</span>
+                        <input type="file" class="filebutton upload" value="Upload your thumb" id="video-list-thumb-{{forloop.counter}}" name="video-list-thumb"/>
+                    </div>
+                    </div>
+                    {% endif %}
+                    <div class="col-md-2">
+                        <!-- <a id="saveDesc" class="save" href="#">Save</a> -->
+                        <input id="video-list-save-{{forloop.counter}}" onclick="ajax_video_update('hidden-video-list-id-{{forloop.counter}}', 'video-list-title-{{forloop.counter}}', 'video-list-desc-{{forloop.counter}}', 'video-list-thumb-{{forloop.counter}}', 'video-list-save-{{forloop.counter}}', 'thumbparent-{{forloop.counter}}', 'mainvideotitle-{{forloop.counter}}')" class="save" value="Save" readonly="true">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end video 1-->
+{% endfor %}
+
+    </div>
+    <!-- end toggle completed fields -->
+    <div class="col-md-1 right">
+    <br>
+        <a class="button alternate" onclick="validate_clips_and_submit('{{added_videos|length}}')">Request</a>
+    </div>
+</div>
+</form>
+{% endblock content %}
+{% block custom_scripts %}
+<script src="{% static 'audience/js/ajax_handle.js' %}"></script>
+<script src="{% static 'audience/js/addcontent.js' %}"></script>
+<script src="{% static 'audience/js/chosen.jquery.min.js' %}"></script>
+<script type="text/javascript"> 
+    COLLECTION_TOPIC_EMPTY = "{{error_messages.COLLECTION_TOPIC_EMPTY}}";
+    VIDEO_AND_URL_EMPTY = "{{error_messages.VIDEO_AND_URL_EMPTY}}";
+    VIDEO_AND_URL_FILLED = "{{error_messages.VIDEO_AND_URL_FILLED}}";
+    COLLECTION_AND_TYPE_EMPTY = "{{error_messages.COLLECTION_AND_TYPE_EMPTY}}";
+    UNSUPPORTED_VIDEO_FORMAT = "{{error_messages.UNSUPPORTED_VIDEO_FORMAT}}";
+    video_count = 1;
+    
+    $( document ).ready(function() {
+        // blacklist_countries_1
+        $("#blacklist_countries_1").chosen();
+    });
+
+</script>
+{% endblock custom_scripts %}

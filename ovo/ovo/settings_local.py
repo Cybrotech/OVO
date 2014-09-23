@@ -1,0 +1,5 @@
+COLLECTION_TOPIC_EMPTY = 'You must select a topic for your collection !'.upper()
+VIDEO_AND_URL_EMPTY = 'Upload video file or provide video url'.upper()
+VIDEO_AND_URL_FILLED = 'Either upload video or provide video url. Not both !'.upper()
+COLLECTION_AND_TYPE_EMPTY = 'Collection and type must be filled !'.upper()
+UNSUPPORTED_VIDEO_FORMAT = 'Unsupported format ! Use mp4 format !'.upper()
